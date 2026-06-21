@@ -1,0 +1,9 @@
+{
+  "name": "detectItems",
+  "version": "1.0.0",
+  "description": "粗识别·检测箱内物品边界框 · 通义千问 Qwen-VL",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

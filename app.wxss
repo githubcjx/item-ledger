@@ -1,0 +1,210 @@
+/* ============================================================
+   「箱底」全局样式 · 牛皮纸 / 墨色 设计令牌
+   令牌取自原型 (箱底-收纳记录-原型.html)，px → rpx 约 2 倍换算
+   ============================================================ */
+page {
+  --paper: #F2EEE4;
+  --paper-deep: #E8E1D2;
+  --ink: #2B2620;
+  --ink-soft: #6B6356;
+  --kraft: #C9A876;
+  --kraft-deep: #A8824F;
+  --stamp-red: #B14B3F;
+  --tag-green: #5C6B4F;
+  --line: #D8D0BC;
+  --white: #FFFCF6;
+  --shadow: rgba(43, 38, 32, 0.12);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  -webkit-tap-highlight-color: transparent;
+}
+
+view, text, input, textarea, scroll-view, image, button {
+  box-sizing: border-box;
+}
+
+/* ---------- 自定义导航栏 ---------- */
+.nav-bar {
+  position: relative;
+  width: 100%;
+  background: var(--paper);
+}
+.nav-content {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 24rpx;
+}
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: var(--ink);
+}
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--ink);
+}
+.nav-step {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: var(--ink-soft);
+  background: var(--paper-deep);
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+}
+
+/* ---------- 通用容器 ---------- */
+.content {
+  padding: 0 40rpx 230rpx;
+}
+
+/* ---------- 段落标签 ---------- */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 44rpx 0 24rpx;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  letter-spacing: 3rpx;
+  font-weight: 600;
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1rpx;
+  background: var(--line);
+}
+
+/* ---------- 物品小标签 ---------- */
+.chip {
+  font-size: 21rpx;
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+  padding: 6rpx 16rpx;
+  border-radius: 40rpx;
+}
+.chip.outline {
+  background: var(--white);
+  border: 1rpx solid var(--line);
+  padding: 14rpx 28rpx;
+  font-size: 24rpx;
+}
+.chip.active {
+  background: var(--kraft);
+  color: #fff;
+  border-color: var(--kraft);
+}
+
+/* ---------- 表单 ---------- */
+.field-group { margin-bottom: 36rpx; }
+.field-label {
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  margin-bottom: 16rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+.field-input {
+  width: 100%;
+  height: 100rpx;
+  padding: 0 28rpx;
+  background: var(--white);
+  border: 2rpx solid var(--line);
+  border-radius: 24rpx;
+  font-size: 29rpx;
+  color: var(--ink);
+}
+.field-input.placeholder { color: #B5AD96; }
+
+/* ---------- 按钮 ---------- */
+.primary-btn {
+  width: 100% !important;
+  background: var(--stamp-red);
+  color: #fff;
+  border: none;
+  border-radius: 28rpx;
+  padding: 30rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  box-shadow: 0 12rpx 32rpx rgba(177, 75, 63, 0.3);
+  line-height: 1.2;
+}
+.primary-btn.green {
+  background: var(--tag-green);
+  box-shadow: 0 12rpx 32rpx rgba(92, 107, 79, 0.3);
+}
+.primary-btn[disabled] {
+  background: #C9C2AC;
+  color: #fff;
+  box-shadow: none;
+}
+.secondary-btn {
+  width: 100% !important;
+  background: transparent;
+  color: var(--ink-soft);
+  border: 2rpx solid var(--line);
+  border-radius: 28rpx;
+  padding: 28rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-top: 20rpx;
+  line-height: 1.2;
+}
+button::after { border: none; }
+
+.bottom-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 40rpx calc(34rpx + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--paper) 62%, rgba(242, 238, 228, 0));
+  z-index: 20;
+}
+
+/* ---------- 进度条 ---------- */
+.flow-progress {
+  display: flex;
+  gap: 10rpx;
+  padding: 0 40rpx 8rpx;
+}
+.flow-progress .seg {
+  flex: 1;
+  height: 6rpx;
+  border-radius: 6rpx;
+  background: var(--line);
+}
+.flow-progress .seg.done { background: var(--kraft-deep); }
+
+/* ---------- 缩略图（无照片时的牛皮纸底纹占位） ---------- */
+.kraft-thumb {
+  background: linear-gradient(135deg, var(--kraft), var(--kraft-deep));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- 空状态 ---------- */
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  padding: 120rpx 60rpx;
+  text-align: center;
+}
+.empty-wrap .emoji { font-size: 96rpx; opacity: 0.5; }
+.empty-wrap .title { font-size: 30rpx; font-weight: 700; color: var(--ink); }
+.empty-wrap .sub { font-size: 25rpx; color: var(--ink-soft); line-height: 1.7; }

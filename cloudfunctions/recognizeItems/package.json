@@ -1,0 +1,9 @@
+{
+  "name": "recognizeItems",
+  "version": "1.0.0",
+  "description": "拍照识别箱内物品 · 调用阿里云通义千问 Qwen-VL",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

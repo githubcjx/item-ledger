@@ -1,0 +1,81 @@
+<view class="page">
+  <view style="height:{{statusBarHeight}}px;"></view>
+
+  <!-- 导航栏 -->
+  <view class="nav-content">
+    <view class="nav-back" bindtap="back"><icon name="back" size="40" color="#2B2620" /></view>
+    <view class="nav-title">找东西</view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <view class="s-icon"><icon name="search" size="34" color="#8C8166" /></view>
+    <input class="s-input" placeholder="搜物品名，或「过冬的衣服」" placeholder-class="s-ph"
+      value="{{query}}" confirm-type="search" focus="{{autoFocus}}"
+      bindinput="onInput" bindconfirm="doSearch" />
+    <view wx:if="{{query}}" class="s-clear" bindtap="clear"><icon name="close" size="22" color="#6B6356" /></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+    <view class="content">
+
+      <!-- 结果态 -->
+      <block wx:if="{{searched}}">
+        <view class="result-hint">找到 <text class="hl">{{results.length}}</text> 处匹配</view>
+
+        <view class="trace-card" wx:for="{{results}}" wx:key="key" data-id="{{item.boxId}}" bindtap="goDetail">
+          <view class="trace-item-row">
+            <view class="trace-item-thumb kraft-soft">
+              <image wx:if="{{item.itemPhoto}}" class="ti-img" src="{{item.itemPhoto}}" mode="aspectFill" />
+              <icon wx:else name="bookmark" size="40" color="#A8824F" />
+            </view>
+            <view class="trace-item-main">
+              <view class="trace-item-name">{{item.itemName}}</view>
+              <view class="trace-item-match">在「{{item.boxName}}」中</view>
+            </view>
+          </view>
+          <view class="trace-path">
+            <view class="trace-path-step">
+              <view class="tp-icon"><icon name="box" size="36" color="#FFFFFF" /></view>
+              <view class="tp-label">{{item.boxName}}</view>
+            </view>
+            <view class="trace-path-arrow"><icon name="chevron" size="26" color="#D8D0BC" /></view>
+            <view class="trace-path-step">
+              <view class="tp-icon"><icon name="pin" size="36" color="#FFFFFF" /></view>
+              <view class="tp-label">{{item.locText}}</view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{results.length === 0}}" class="empty-wrap">
+          <view class="emoji"><icon name="search" size="88" color="#B8AF98" /></view>
+          <view class="title">没找到「{{query}}」</view>
+          <view class="sub">换个说法试试，或确认这件东西是否记录过</view>
+        </view>
+      </block>
+
+      <!-- 初始态 -->
+      <block wx:else>
+        <view wx:if="{{recent.length > 0}}">
+          <view class="section-label">最近搜过</view>
+          <view class="chip-row">
+            <text class="chip outline" wx:for="{{recent}}" wx:key="*this" data-q="{{item}}" bindtap="tapRecent">{{item}}</text>
+          </view>
+        </view>
+
+        <view class="section-label">试试这样搜</view>
+        <view class="tips">
+          <view class="tip">
+            <icon name="bulb" size="30" color="#A8824F" />
+            <text class="tip-txt">不用记完整名字，搜<text class="hl-ink">「过冬的衣服」</text>也能找到羽绒服、毛衣</text>
+          </view>
+          <view class="tip">
+            <icon name="bulb" size="30" color="#A8824F" />
+            <text class="tip-txt">搜<text class="hl-ink">「螺丝刀」</text>能找到工具杂物箱里的整套工具</text>
+          </view>
+        </view>
+      </block>
+
+    </view>
+  </scroll-view>
+</view>

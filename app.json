@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/search",
+    "pages/box-new/box-new",
+    "pages/box-detail/box-detail"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#F2EEE4",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F2EEE4",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

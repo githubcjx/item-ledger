@@ -1,0 +1,9 @@
+{
+  "name": "nameRegion",
+  "version": "1.0.0",
+  "description": "细识别·对指定区域命名 · 通义千问 Qwen-VL",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

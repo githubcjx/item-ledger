@@ -1,0 +1,89 @@
+<view class="page" wx:if="{{box}}">
+  <view style="height:{{statusBarHeight}}px;"></view>
+
+  <view class="nav-content" style="padding-right:{{menuRight}}px;">
+    <view class="nav-back" bindtap="back"><icon name="back" size="40" color="#2B2620" /></view>
+    <view class="nav-title" style="flex:1;">箱子详情</view>
+    <view class="icon-btn-sm" bindtap="editBox"><icon name="edit" size="32" color="#2B2620" /></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+    <!-- 封面（点击预览 / 更换） -->
+    <view class="box-hero kraft-thumb" bindtap="tapCover">
+      <image wx:if="{{box.coverPhoto}}" class="hero-img" src="{{box.coverPhoto}}" mode="aspectFill" />
+      <view class="hero-cam"><icon name="camera" size="26" color="#FFFFFF" /></view>
+      <view class="hero-label">
+        <view class="bn">{{box.name}}</view>
+        <view class="bl">共 {{box.items.length}} 件物品</view>
+      </view>
+    </view>
+
+    <!-- 位置条（点击改名 / 换位置照 / 预览） -->
+    <view class="loc-strip" bindtap="tapLocation">
+      <view class="dl-icon">
+        <image wx:if="{{box.locationPhoto}}" class="dl-img" src="{{box.locationPhoto}}" mode="aspectFill" />
+        <icon wx:else name="pin" size="36" color="#6B6356" />
+      </view>
+      <view class="dl-text">
+        <view class="dl-title">{{box.locationName || '未记录位置'}}</view>
+        <view class="dl-time">最后更新于 {{updatedText}}</view>
+      </view>
+      <view class="dl-action"><text>管理</text><icon name="chevron" size="24" color="#A8824F" /></view>
+    </view>
+
+    <view wx:if="{{box.note}}" class="note-strip">
+      <icon name="edit" size="26" color="#6B6356" />
+      <text class="note-txt">{{box.note}}</text>
+    </view>
+
+    <view class="content" style="padding-top:32rpx;">
+      <view class="section-label">箱内物品 · {{box.items.length}}</view>
+      <view wx:if="{{box.items.length > 0}}" class="items-tip">点物品可预览图片 / 改名 / 换图 / 删除</view>
+
+      <view wx:if="{{box.items.length > 0}}" class="items-grid">
+        <view class="item-cell" wx:for="{{box.items}}" wx:key="itemId"
+          data-id="{{item.itemId}}" data-photo="{{item.photo}}" data-name="{{item.name}}" bindtap="tapItem">
+          <view class="ic-thumb kraft-soft">
+            <image wx:if="{{item.photo}}" class="ic-img" src="{{item.photo}}" mode="aspectFill" />
+            <icon wx:else name="bookmark" size="40" color="#A8824F" />
+          </view>
+          <view class="ic-name">{{item.name}}</view>
+        </view>
+      </view>
+
+      <view wx:else class="items-empty">
+        这箱还没记录具体物品{{"\n"}}你仍能搜到它在哪，加上物品后能搜到每件东西
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-action-bar">
+    <button class="primary-btn green" bindtap="addItem">+ 添加物品到这个箱子</button>
+  </view>
+
+  <!-- 添加物品面板（名称必填，图片可选） -->
+  <view wx:if="{{addModal.show}}" class="sheet-mask" bindtap="closeAddItem">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-title">添加物品</view>
+
+      <view class="sheet-row">
+        <view class="add-photo" bindtap="chooseAddPhoto">
+          <image wx:if="{{addModal.photo}}" class="add-photo-img" src="{{addModal.photo}}" mode="aspectFill" />
+          <block wx:else>
+            <icon name="camera" size="40" color="#6B6356" />
+            <view class="add-photo-tip">图片可选</view>
+          </block>
+          <view wx:if="{{addModal.photo}}" class="add-photo-clear" catchtap="clearAddPhoto"><icon name="close" size="20" color="#FFFFFF" /></view>
+        </view>
+        <input class="sheet-input" placeholder="物品名称，如 灰色毛衣" placeholder-class="ph"
+          value="{{addModal.name}}" focus="{{addModal.show}}" confirm-type="done"
+          bindinput="onAddNameInput" bindconfirm="confirmAddItem" />
+      </view>
+
+      <view class="sheet-actions">
+        <button class="primary-btn green" bindtap="confirmAddItem">添加</button>
+        <button class="secondary-btn" bindtap="closeAddItem">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

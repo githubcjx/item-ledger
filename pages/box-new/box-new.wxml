@@ -1,0 +1,245 @@
+<view class="page">
+  <view style="height:{{statusBarHeight}}px;"></view>
+
+  <!-- 成功页 -->
+  <block wx:if="{{done}}">
+    <view class="success-wrap">
+      <view class="stamp-circle"><icon name="check" size="104" color="#5C6B4F" stroke="2.4" /></view>
+      <view class="success-title">入库完成</view>
+      <view class="success-sub">「{{draft.name}}」已收纳{{"\n"}}{{draft.items.length}} 件物品 · 存放在{{draft.locationName || '未记录位置'}}</view>
+
+      <view class="success-card">
+        <view class="sc-thumb kraft-thumb">
+          <image wx:if="{{draft.coverPhoto}}" class="sc-img" src="{{draft.coverPhoto}}" mode="aspectFill" />
+          <icon wx:else name="box" size="44" color="#FFFFFF" />
+        </view>
+        <view class="sc-info">
+          <view class="sc-name">{{draft.name}}</view>
+          <view class="sc-loc"><icon name="pin" size="24" color="#6B6356" /><text>{{draft.locationName || '未记录位置'}}</text></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom-action-bar">
+      <button class="primary-btn" bindtap="goHome">回到首页</button>
+      <button class="secondary-btn" bindtap="again">继续记录下一个箱子</button>
+    </view>
+  </block>
+
+  <!-- 流程页 -->
+  <block wx:else>
+    <view class="nav-content" style="padding-right:{{menuRight}}px;">
+      <view class="nav-back" bindtap="back"><icon name="back" size="40" color="#2B2620" /></view>
+      <view class="nav-title">{{step === 3 ? '记录箱内物品' : (step === 4 ? '放在哪里？' : '新建箱子')}}</view>
+      <view class="nav-step">{{step}} / 4</view>
+    </view>
+    <view class="flow-progress">
+      <view class="seg {{step >= 1 ? 'done' : ''}}"></view>
+      <view class="seg {{step >= 2 ? 'done' : ''}}"></view>
+      <view class="seg {{step >= 3 ? 'done' : ''}}"></view>
+      <view class="seg {{step >= 4 ? 'done' : ''}}"></view>
+    </view>
+
+    <!-- 步骤 1：拍箱子整体照 -->
+    <block wx:if="{{step === 1}}">
+      <view class="capture-stage" bindtap="chooseCover">
+        <view class="cfc cfc-tl"></view><view class="cfc cfc-tr"></view>
+        <view class="cfc cfc-bl"></view><view class="cfc cfc-br"></view>
+        <image wx:if="{{draft.coverPhoto}}" class="captured-fill" src="{{draft.coverPhoto}}" mode="aspectFill" />
+        <view wx:else class="camera-hint">
+          <view class="big"><icon name="box" size="96" color="#C9A876" stroke="1.6" /></view>
+          给箱子整体拍一张照{{"\n"}}方便你以后一眼认出它
+        </view>
+      </view>
+      <view class="capture-tip">{{draft.coverPhoto ? '点击照片可重拍' : '点击上方区域拍照或从相册选择'}}</view>
+      <view style="height:200rpx;flex-shrink:0;"></view>
+      <view class="bottom-action-bar">
+        <button class="primary-btn" bindtap="next">{{draft.coverPhoto ? '下一步 · 给箱子起名' : '跳过 · 暂不拍照'}}</button>
+      </view>
+    </block>
+
+    <!-- 步骤 2：起名（表单不放进 scroll-view，避免原生输入框文字不显示） -->
+    <view wx:if="{{step === 2}}" class="step-pad">
+      <view class="named-head">
+        <view class="nh-thumb kraft-thumb">
+          <image wx:if="{{draft.coverPhoto}}" class="nh-img" src="{{draft.coverPhoto}}" mode="aspectFill" />
+          <icon wx:else name="box" size="72" color="#FFFFFF" />
+        </view>
+        <view class="nh-text">{{draft.coverPhoto ? '拍得不错，接下来给这个箱子起个名字' : '先给这个箱子起个名字吧'}}</view>
+      </view>
+
+      <view class="field-group">
+        <view class="field-label">箱子名称</view>
+        <input class="field-input" placeholder="例如：换季衣物 · 冬装" placeholder-class="ph"
+          value="{{draft.name}}" bindinput="onNameInput" />
+      </view>
+      <view class="field-group">
+        <view class="field-label">备注（可选）</view>
+        <input class="field-input" placeholder="例如：开春后记得拿出来晒一下" placeholder-class="ph"
+          value="{{draft.note}}" bindinput="onNoteInput" />
+      </view>
+
+      <view class="bottom-action-bar">
+        <button class="primary-btn" disabled="{{!draft.name}}" bindtap="next">下一步 · 记录箱内物品</button>
+      </view>
+    </view>
+
+    <!-- 步骤 3：两步识别（idle 录入态 / review 画框复核态） -->
+    <view wx:if="{{step === 3}}" class="step-col">
+
+      <!-- idle：拍照识别入口 + 手动添加 + 已确认清单 -->
+      <block wx:if="{{recogPhase === 'idle'}}">
+        <view class="step3-top">
+          <view class="step-desc">把箱子里的东西摆开拍一张，AI 会自动框出每件物品，点框即可命名。{{"\n"}}也可以手动添加，或整箱打个标签。</view>
+
+          <view class="ai-recognize-btn" bindtap="detectFlow">
+            <view class="air-icon"><icon name="sparkle" size="44" color="#FFFFFF" /></view>
+            <view class="air-text">
+              <view class="air-title">拍照识别物品（自动画框）</view>
+              <view class="air-sub">AI 框出物品 → 点框命名 → 可改可删</view>
+            </view>
+            <icon name="chevron" size="32" color="#FFFFFF" />
+          </view>
+
+          <view class="or-divider"><text>或手动添加</text></view>
+
+          <view class="add-item-row">
+            <view class="ai-photo" bindtap="chooseItemPhoto">
+              <image wx:if="{{newItemPhoto}}" class="ai-img" src="{{newItemPhoto}}" mode="aspectFill" />
+              <icon wx:else name="camera" size="36" color="#6B6356" />
+            </view>
+            <input class="ai-input" placeholder="物品名称，如 灰色毛衣" placeholder-class="ph"
+              value="{{newItemName}}" confirm-type="done" bindinput="onItemNameInput" bindconfirm="addItem" />
+            <view class="ai-add {{newItemName ? '' : 'disabled'}}" bindtap="addItem">添加</view>
+          </view>
+
+          <view class="link-row">
+            <text wx:if="{{draft.items.length > 0}}" class="items-count">已记录 {{draft.items.length}} 件</text>
+            <text class="ghost-link" bindtap="wholeBoxTag">识别太难？整箱打个标签</text>
+          </view>
+        </view>
+
+        <scroll-view scroll-y class="step3-grid" enhanced show-scrollbar="{{false}}">
+          <view class="id-grid">
+            <view class="id-item" wx:for="{{draft.items}}" wx:key="key">
+              <view class="remove-x" data-i="{{index}}" catchtap="removeItem"><icon name="close" size="22" color="#6B6356" /></view>
+              <view class="id-thumb kraft-soft" data-i="{{index}}" catchtap="replaceDraftPhoto">
+                <image wx:if="{{item.photo}}" class="id-img" src="{{item.photo}}" mode="aspectFill" />
+                <icon wx:else name="bookmark" size="44" color="#A8824F" />
+                <view class="id-cam"><icon name="camera" size="20" color="#FFFFFF" /></view>
+              </view>
+              <view class="id-name" data-i="{{index}}" catchtap="editDraftName">{{item.name}}</view>
+            </view>
+          </view>
+          <view wx:if="{{draft.items.length === 0}}" class="items-empty">还没有物品，拍照识别或手动添加一件吧</view>
+          <view style="height:180rpx;"></view>
+        </scroll-view>
+
+        <view class="bottom-action-bar">
+          <button class="primary-btn" bindtap="next">下一步 · 记录存放位置</button>
+        </view>
+      </block>
+
+      <!-- review：原图常驻参照 + 画框叠层 + 下方物品列表（命名/删除/缩略图） -->
+      <block wx:elif="{{recogPhase === 'review'}}">
+        <scroll-view scroll-y class="review-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="anno-hint">点框命名（选中后框上出现 ✕ 可删）· 空白处拖动补框 · 下方列表可改名 / 换图 / 删除</view>
+
+          <view class="anno-wrap">
+            <image class="anno-img" src="{{recogPhoto}}" mode="widthFix" bindload="onImgLoad" />
+            <view class="anno-layer"
+              catchtouchstart="onAnnoTouchStart" catchtouchmove="onAnnoTouchMove" catchtouchend="onAnnoTouchEnd">
+              <view wx:for="{{boxes}}" wx:key="key"
+                class="anno-box {{selected === index ? 'selected' : ''}} {{item.name ? 'named' : ''}}"
+                style="left:{{item.x*100}}%;top:{{item.y*100}}%;width:{{item.w*100}}%;height:{{item.h*100}}%;"
+                data-i="{{index}}" catchtap="tapBox" catchtouchstart="noop">
+                <view class="anno-no">{{index + 1}}</view>
+                <view wx:if="{{selected === index}}" class="anno-del" data-i="{{index}}"
+                  catchtap="removeBox" catchtouchstart="noop"><icon name="close" size="22" color="#FFFFFF" /></view>
+                <view wx:if="{{item.naming}}" class="anno-name naming">识别中…</view>
+                <view wx:elif="{{item.name}}" class="anno-name">{{item.name}}</view>
+                <view wx:else class="anno-name empty">点我命名</view>
+              </view>
+              <view wx:if="{{draw.active}}" class="anno-draw"
+                style="left:{{draw.x*100}}%;top:{{draw.y*100}}%;width:{{draw.w*100}}%;height:{{draw.h*100}}%;"></view>
+            </view>
+          </view>
+
+          <!-- 物品列表：缩略图 + 命名 + 删除（普通点击，稳定可靠） -->
+          <view wx:if="{{boxes.length > 0}}" class="box-list">
+            <view class="box-row" wx:for="{{boxes}}" wx:key="key">
+              <view class="br-thumb kraft-soft" data-i="{{index}}" catchtap="replaceBoxPhoto">
+                <image wx:if="{{item.thumb}}" class="br-img" src="{{item.thumb}}" mode="aspectFill" />
+                <icon wx:else name="bookmark" size="34" color="#A8824F" />
+                <view class="br-no">{{index + 1}}</view>
+                <view class="br-cam"><icon name="camera" size="22" color="#FFFFFF" /></view>
+              </view>
+              <view class="br-main" data-i="{{index}}" catchtap="tapName">
+                <view wx:if="{{item.naming}}" class="br-name muted">识别中…</view>
+                <view wx:elif="{{item.name}}" class="br-name">{{item.name}}</view>
+                <view wx:else class="br-name muted">点击命名 / 修改</view>
+                <view class="br-sub">点名字改名 · 点图换图</view>
+              </view>
+              <view class="br-del" data-i="{{index}}" catchtap="removeBox"><icon name="trash" size="36" color="#B14B3F" /></view>
+            </view>
+          </view>
+          <view wx:else class="anno-empty">没有框，可在原图上拖动补框，或整箱打标签</view>
+
+          <view class="ghost-link center" bindtap="wholeBoxTag">识别太难？整箱打个标签</view>
+          <view style="height:220rpx;"></view>
+        </scroll-view>
+
+        <view class="bottom-action-bar">
+          <button class="primary-btn" bindtap="mergeBoxes">完成识别 · 加入清单</button>
+          <button class="secondary-btn" bindtap="detectFlow">重拍</button>
+        </view>
+      </block>
+
+    </view>
+
+    <!-- 步骤 4：记录存放位置（表单不放进 scroll-view） -->
+    <view wx:if="{{step === 4}}" class="step-pad">
+      <view class="step-desc">把箱子放好之后，拍一张周围环境的照片。{{"\n"}}下次找的时候，这张照片能帮你想起位置。</view>
+
+      <view class="loc-photo-box" bindtap="chooseLocationPhoto">
+        <image wx:if="{{draft.locationPhoto}}" class="loc-img" src="{{draft.locationPhoto}}" mode="aspectFill" />
+        <block wx:else>
+          <view class="plus-circle"><icon name="camera" size="38" color="#6B6356" /></view>
+          <text>拍摄存放位置照片</text>
+        </block>
+      </view>
+
+      <view class="field-group" style="margin-top:36rpx;">
+        <view class="field-label">位置描述</view>
+        <input class="field-input" placeholder="例如：阳台储物柜 · 第二层" placeholder-class="ph"
+          value="{{draft.locationName}}" bindinput="onLocInput" />
+      </view>
+
+      <view class="field-group">
+        <view class="field-label">选择常用位置</view>
+        <view class="chip-row">
+          <text class="chip outline {{draft.locationName === item ? 'active' : ''}}"
+            wx:for="{{frequentLocations}}" wx:key="*this" data-loc="{{item}}" bindtap="pickFrequent">{{item}}</text>
+        </view>
+      </view>
+
+      <view class="bottom-action-bar">
+        <button class="primary-btn" bindtap="finish">完成入库</button>
+      </view>
+    </view>
+
+  </block>
+
+  <!-- 离屏画布：用于从原图裁剪每件物品的缩略图 -->
+  <canvas type="2d" id="cropper" class="cropper"></canvas>
+
+  <!-- AI 识别处理中 遮罩 -->
+  <view wx:if="{{recognizing}}" class="processing-mask">
+    <view class="scan-box">
+      <icon name="scan" size="100" color="#F2EEE4" stroke="1.6" />
+      <view class="scan-line"></view>
+    </view>
+    <view class="dot-loader"><view></view><view></view><view></view></view>
+    <view class="processing-text">{{recognizeStatus || '识别中…'}}</view>
+  </view>
+</view>

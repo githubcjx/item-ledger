@@ -1,0 +1,123 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--paper);
+}
+.scroll { flex: 1; overflow: hidden; }
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 8rpx 40rpx 12rpx;
+  background: var(--white);
+  border: 3rpx solid var(--kraft-deep);
+  border-radius: 28rpx;
+  padding: 22rpx 28rpx;
+}
+.s-icon { line-height: 0; }
+.s-input { flex: 1; font-size: 30rpx; color: var(--ink); }
+.s-ph { color: #ADA68F; }
+.s-clear {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: var(--paper-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-hint {
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  margin: 20rpx 0 20rpx;
+}
+.result-hint .hl { color: var(--stamp-red); font-weight: 700; }
+
+.chip-row {
+  display: flex;
+  gap: 16rpx;
+  flex-wrap: wrap;
+  margin-bottom: 20rpx;
+}
+
+.tips { }
+.tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+.tip-txt {
+  flex: 1;
+  font-size: 25rpx;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.hl-ink { color: var(--ink); font-weight: 600; }
+
+/* 溯源卡片 */
+.trace-card {
+  background: var(--white);
+  border-radius: 32rpx;
+  border: 1rpx solid var(--line);
+  padding: 32rpx;
+  margin-bottom: 28rpx;
+}
+.trace-card:active { transform: scale(0.99); }
+.trace-item-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+.trace-item-thumb {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+.kraft-soft { background: var(--paper-deep); }
+.ti-img { width: 100%; height: 100%; border-radius: 18rpx; }
+.trace-item-main { flex: 1; min-width: 0; }
+.trace-item-name { font-size: 29rpx; font-weight: 700; color: var(--ink); }
+.trace-item-match { font-size: 23rpx; color: var(--tag-green); margin-top: 4rpx; }
+
+.trace-path {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx dashed var(--line);
+}
+.trace-path-step {
+  flex: 1;
+  text-align: center;
+}
+.tp-icon {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 20rpx;
+  background: var(--kraft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  margin: 0 auto 12rpx;
+}
+.tp-label {
+  font-size: 22rpx;
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.trace-path-arrow {
+  line-height: 0;
+  margin-top: 26rpx;
+}
