@@ -1,5 +1,5 @@
 {
-  "description": "「箱底」收纳记录小程序 - v0.1 最小闭环",
+  "description": "「物账本」收纳记录小程序 - v0.1 最小闭环",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
   "appid": "wx275770dbcdec0339",

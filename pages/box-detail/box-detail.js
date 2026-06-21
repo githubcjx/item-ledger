@@ -60,16 +60,16 @@ Page({
   // 点位置条：改名 / 换位置照 / 预览位置照
   tapLocation() {
     const photo = this.data.box.locationPhoto
-    const list = ['修改位置名称']
-    list.push(photo ? '更换位置照片' : '添加位置照片')
-    if (photo) list.push('预览位置照片')
+    const list = ['修改名称']
+    list.push(photo ? '更换照片' : '添加照片')
+    if (photo) list.push('预览照片')
     wx.showActionSheet({
       itemList: list,
       success: res => {
         const label = list[res.tapIndex]
-        if (label === '修改位置名称') this._editLocationName()
-        else if (label === '预览位置照片') wx.previewImage({ urls: [photo], current: photo })
-        else this._replaceBoxPhoto('locationPhoto', '位置照片')
+        if (label === '修改名称') this._editLocationName()
+        else if (label === '预览照片') wx.previewImage({ urls: [photo], current: photo })
+        else this._replaceBoxPhoto('locationPhoto', '照片')
       }
     })
   },
@@ -242,7 +242,7 @@ Page({
       title: '删除物品',
       content: '确定删除「' + (name || '该物品') + '」吗？',
       confirmText: '删除',
-      confirmColor: '#B14B3F',
+      confirmColor: '#C56B38',
       success: async res => {
         if (res.confirm) {
           await store.removeItemFromBox(this.data.boxId, itemId)
@@ -299,7 +299,7 @@ Page({
       title: '删除箱子',
       content: '删除后「' + this.data.box.name + '」及箱内物品记录将无法恢复，确定删除吗？',
       confirmText: '删除',
-      confirmColor: '#B14B3F',
+      confirmColor: '#C56B38',
       success: async res => {
         if (res.confirm) {
           wx.showLoading({ title: '删除中', mask: true })

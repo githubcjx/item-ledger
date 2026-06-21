@@ -19,9 +19,15 @@ const ICONS = {
   close: '<path d="M6 6l12 12M18 6L6 18"/>',
   scan: '<path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3"/><path d="M4 12h16"/>',
   bulb: '<path d="M9.5 18h5M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2 1 1.9v.2h5v-.2c.1-.7.4-1.4 1-1.9A6 6 0 0 0 12 3z"/>',
-  sparkle: '<path d="M12 4l1.8 4.7L18.5 10l-4.7 1.3L12 16l-1.8-4.7L5.5 10l4.7-1.3z"/>',
+  sparkle: '<path d="M11 3 12.7 8.3 18 10l-5.3 1.7L11 17l-1.7-5.3L4 10l5.3-1.7Z"/><path d="M18.5 13.5 19.2 15.3 21 16l-1.8.7L18.5 18.5 17.8 16.7 16 16l1.8-.7Z"/>',
   trash: '<path d="M5 7h14M9 7V5h6v2M7 7l1 13h8l1-13"/>',
-  cloud: '<path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9.5 3.5 3.5 0 0 0 7 18z"/>'
+  cloud: '<path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9.5 3.5 3.5 0 0 0 7 18z"/>',
+  photo: '<rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="8.3" cy="10" r="1.5"/><polyline points="4 17.5 9.5 12 13 15.5 16 12.5 20 16.5"/>',
+  refresh: '<path d="M20 11A8 8 0 0 0 6.3 6"/><polyline points="6 2.5 6 6 9.5 6"/><path d="M4 13a8 8 0 0 0 13.7 5"/><polyline points="18 21.5 18 18 14.5 18"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7.5 12 12 15 14"/>',
+  arrow: '<path d="M4 12h15"/><path d="M13.5 6l5.5 6-5.5 6"/>',
+  user: '<circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>'
 }
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -48,7 +54,7 @@ Component({
   properties: {
     name: { type: String, value: '' },
     size: { type: Number, value: 32 },
-    color: { type: String, value: '#2B2620' },
+    color: { type: String, value: '#3A322A' },
     stroke: { type: Number, value: 2 }
   },
   data: { src: '' },

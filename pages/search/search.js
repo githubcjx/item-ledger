@@ -66,6 +66,24 @@ Page({
     this.setData({ query: e.currentTarget.dataset.q }, () => this.doSearch())
   },
 
+  removeRecent(e) {
+    const q = e.currentTarget.dataset.q
+    this.setData({ recent: store.removeRecentSearch(q) })
+  },
+
+  clearRecent() {
+    if (!this.data.recent.length) return
+    wx.showModal({
+      title: '清空搜索记录',
+      content: '确定要删除全部最近搜索吗？',
+      confirmText: '清空',
+      confirmColor: '#C56B38',
+      success: res => {
+        if (res.confirm) this.setData({ recent: store.clearRecentSearch() })
+      }
+    })
+  },
+
   clear() {
     this.setData({ query: '', searched: false, results: [] })
   },

@@ -230,6 +230,17 @@ function pushRecentSearch(q) {
   wx.setStorageSync(RECENT_KEY, list.slice(0, 8))
 }
 
+function removeRecentSearch(q) {
+  const list = getRecentSearch().filter(x => x !== q)
+  wx.setStorageSync(RECENT_KEY, list)
+  return list
+}
+
+function clearRecentSearch() {
+  wx.removeStorageSync(RECENT_KEY)
+  return []
+}
+
 /* ---------------- 相对时间 ---------------- */
 
 function relativeTime(ts) {
@@ -298,6 +309,8 @@ module.exports = {
   getFrequentLocations,
   getRecentSearch,
   pushRecentSearch,
+  removeRecentSearch,
+  clearRecentSearch,
   relativeTime,
   seedDemo
 }

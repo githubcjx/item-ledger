@@ -10,13 +10,11 @@ Page({
     submitting: false,
     recognizing: false,
     recognizeStatus: '',
-    // —— v0.2 两步识别 ——
+    // —— v0.2 两步识别（仅 AI 自动画框，不支持手动框选） ——
     recogPhase: 'idle',   // 'idle' | 'review'
     recogPhoto: '',       // 常驻参照原图（云 fileID）
-    imgRatio: 0,          // 原图 自然高/宽，用于撑开叠层容器
     boxes: [],            // [{key,x,y,w,h,name,keywords,naming}]
     selected: -1,
-    draw: { active: false, x: 0, y: 0, w: 0, h: 0 }, // 拖拽补框预览
     draft: {
       coverPhoto: '',
       name: '',
@@ -32,8 +30,6 @@ Page({
 
   _itemKey: 0,
   _boxKey: 0,
-  _imgRect: null,   // 叠层容器在屏幕上的位置/尺寸，用于触摸坐标换算
-  _drawStart: null, // 拖拽起点(归一化)
 
   onLoad() {
     this.setData({
@@ -91,6 +87,7 @@ Page({
           x: it.box.x, y: it.box.y, w: it.box.w, h: it.box.h,
           name: it.label || '',
           keywords: [],
+          refined: false,   // 是否已做过细识别（取到关键词）；粗识别的 label 仅作占位
           naming: false,
           thumb: ''
         }))
@@ -102,9 +99,8 @@ Page({
           boxes[i].thumb = await this._cropBox(boxes[i])
         }
         this.setData({ recogPhoto: fileID, boxes, recogPhase: 'review' })
-        this._cacheRect()
         wx.showToast({
-          title: boxes.length ? ('框出 ' + boxes.length + ' 处，点框命名') : '没自动框到，手动框选试试',
+          title: boxes.length ? ('框出 ' + boxes.length + ' 处，点框命名') : '没框到物品，可手动添加或整箱打标签',
           icon: 'none'
         })
       } catch (e) {
@@ -182,24 +178,13 @@ Page({
     }
   },
 
-  // 原图加载完成：缓存叠层容器位置（触摸换算用）
-  onImgLoad() {
-    this._cacheRect()
-  },
-
-  _cacheRect() {
-    wx.createSelectorQuery().in(this).select('.anno-layer').boundingClientRect(rect => {
-      if (rect) this._imgRect = rect
-    }).exec()
-  },
-
   // 第二步：点框 → 命名（未命名则 AI 命名；已命名则编辑）
   tapBox(e) {
     const i = e.currentTarget.dataset.i
     const box = this.data.boxes[i]
     if (!box) return
     this.setData({ selected: i })
-    if (box.name) {
+    if (box.refined) {
       this._editBoxName(i)
     } else {
       this._nameBox(i)
@@ -215,7 +200,8 @@ Page({
       if (res && res.ok && res.name) {
         this.setData({
           ['boxes[' + i + '].name']: res.name,
-          ['boxes[' + i + '].keywords']: res.keywords || []
+          ['boxes[' + i + '].keywords']: res.keywords || [],
+          ['boxes[' + i + '].refined']: true
         })
       } else {
         wx.showToast({ title: (res && res.msg) || '没认出来，手动改名', icon: 'none' })
@@ -239,7 +225,10 @@ Page({
       success: res => {
         if (res.confirm) {
           const name = (res.content || '').trim()
-          this.setData({ ['boxes[' + i + '].name']: name })
+          this.setData({
+            ['boxes[' + i + '].name']: name,
+            ['boxes[' + i + '].refined']: true
+          })
         }
       }
     })
@@ -251,49 +240,6 @@ Page({
     const boxes = this.data.boxes.slice()
     boxes.splice(i, 1)
     this.setData({ boxes })
-  },
-
-  // 漏识别 → 在原图空白处拖拽补框
-  onAnnoTouchStart(e) {
-    if (!this._imgRect) { this._cacheRect(); return }
-    const t = e.touches[0]
-    const p = this._toNorm(t)
-    this._drawStart = p
-    this.setData({ draw: { active: true, x: p.x, y: p.y, w: 0, h: 0 } })
-  },
-
-  onAnnoTouchMove(e) {
-    if (!this._drawStart) return
-    const t = e.touches[0]
-    const p = this._toNorm(t)
-    const s = this._drawStart
-    this.setData({
-      draw: {
-        active: true,
-        x: Math.min(s.x, p.x),
-        y: Math.min(s.y, p.y),
-        w: Math.abs(p.x - s.x),
-        h: Math.abs(p.y - s.y)
-      }
-    })
-  },
-
-  onAnnoTouchEnd() {
-    const d = this.data.draw
-    this.setData({ draw: { active: false, x: 0, y: 0, w: 0, h: 0 } })
-    this._drawStart = null
-    if (!d.active || d.w < 0.04 || d.h < 0.04) return // 太小视为点按，忽略
-    const boxes = this.data.boxes.concat([{
-      key: 'b' + (this._boxKey++),
-      x: d.x, y: d.y, w: d.w, h: d.h,
-      name: '', keywords: [], naming: false, thumb: ''
-    }])
-    const i = boxes.length - 1
-    this.setData({ boxes }, async () => {
-      const thumb = await this._cropBox(boxes[i]) // 补框后裁缩略图
-      if (thumb) this.setData({ ['boxes[' + i + '].thumb']: thumb })
-      this._nameBox(i) // 再自动命名
-    })
   },
 
   // 下方列表点名字：未命名则 AI 命名，已命名则编辑（复用 tapBox）
@@ -327,19 +273,6 @@ Page({
   replaceDraftPhoto(e) {
     const i = e.currentTarget.dataset.i
     this._choose(p => this.setData({ ['draft.items[' + i + '].photo']: p }))
-  },
-
-  // 框上的触摸不触发叠层的拖拽补框（catch 前缀已阻止冒泡）
-  noop() {},
-
-  _toNorm(touch) {
-    const r = this._imgRect
-    const x = (touch.clientX - r.left) / r.width
-    const y = (touch.clientY - r.top) / r.height
-    return {
-      x: Math.max(0, Math.min(1, x)),
-      y: Math.max(0, Math.min(1, y))
-    }
   },
 
   // 确认：已命名的框并入物品清单（上传各自裁好的缩略图作为物品图片）
@@ -382,7 +315,7 @@ Page({
   },
 
   exitReview() {
-    this.setData({ recogPhase: 'idle', boxes: [], recogPhoto: '', draw: { active: false, x: 0, y: 0, w: 0, h: 0 } })
+    this.setData({ recogPhase: 'idle', boxes: [], recogPhoto: '' })
   },
 
   // 兜底退路：整箱打一个粗标签（写成一条物品，复用搜索）
@@ -508,16 +441,12 @@ Page({
   again() {
     this._itemKey = 0
     this._boxKey = 0
-    this._imgRect = null
-    this._drawStart = null
     this.setData({
       step: 1,
       done: false,
       recogPhase: 'idle',
       recogPhoto: '',
-      imgRatio: 0,
       boxes: [],
-      draw: { active: false, x: 0, y: 0, w: 0, h: 0 },
       draft: { coverPhoto: '', name: '', note: '', items: [], locationName: '', locationPhoto: '' },
       newItemName: '',
       newItemPhoto: '',

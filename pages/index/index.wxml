@@ -5,32 +5,32 @@
   <!-- 顶部标题栏 -->
   <view class="topbar" style="padding-right:{{menuRight}}px;">
     <view>
-      <view class="app-title">箱底</view>
+      <view class="app-title">物账本</view>
       <view class="app-sub">找东西，从这里开始</view>
     </view>
-    <view class="icon-btn" bindtap="goSearch"><icon name="search" size="34" color="#2B2620" /></view>
+    <!-- <view class="icon-btn" bindtap="goSearch"><icon name="search" size="40" color="#3A322A" /></view> -->
   </view>
 
   <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
     <view class="content">
       <!-- 搜索入口 -->
       <view class="search-wrap" bindtap="goSearch">
-        <view class="search-icon"><icon name="search" size="30" color="#9A9078" /></view>
-        <view class="search-bar-fake">搜「充电器」「过年的碗」试试</view>
+        <view class="search-icon"><icon name="search" size="36" color="#94897A" /></view>
+        <view class="search-bar-fake">东西收哪了，一搜就知道</view>
       </view>
 
       <!-- 统计 -->
       <view class="stat-strip">
         <view class="stat-card">
-          <view class="num">{{stats.boxCount}}</view>
+          <view class="num rounded-num">{{stats.boxCount}}</view>
           <view class="lbl">个箱子</view>
         </view>
         <view class="stat-card">
-          <view class="num">{{stats.itemCount}}</view>
+          <view class="num rounded-num">{{stats.itemCount}}</view>
           <view class="lbl">件物品</view>
         </view>
         <view class="stat-card">
-          <view class="num">{{stats.locationCount}}</view>
+          <view class="num rounded-num">{{stats.locationCount}}</view>
           <view class="lbl">个位置</view>
         </view>
       </view>
@@ -41,18 +41,18 @@
         <view class="box-card" wx:for="{{recentBoxes}}" wx:key="boxId" data-id="{{item.boxId}}" bindtap="goDetail">
           <view class="box-thumb kraft-thumb">
             <image wx:if="{{item.coverPhoto}}" class="thumb-img" src="{{item.coverPhoto}}" mode="aspectFill" />
-            <view wx:else class="thumb-emoji"><icon name="box" size="52" color="#FFFFFF" /></view>
+            <view wx:else class="thumb-emoji"><icon name="photo" size="54" color="#C28A66" stroke="1.6" /></view>
           </view>
           <view class="box-info">
             <view class="box-name">{{item.name}}</view>
-            <view class="box-loc"><icon name="pin" size="24" color="#6B6356" /><text>{{item.locText}}</text></view>
+            <view class="box-loc"><icon name="pin" size="26" color="#94897A" /><text>{{item.locText}}</text></view>
             <view class="box-items-preview">
               <text class="chip" wx:for="{{item.chips}}" wx:for-item="c" wx:key="*this">{{c}}</text>
               <text class="chip" wx:if="{{item.more > 0}}">+{{item.more}}</text>
               <text class="chip" wx:if="{{item.itemCount === 0}}">暂无物品</text>
             </view>
           </view>
-          <view class="chevron"><icon name="chevron" size="28" color="#C9C2AC" /></view>
+          <view class="chevron"><icon name="chevron" size="30" color="#CFC6B2" /></view>
         </view>
 
         <!-- 全部箱子 -->
@@ -60,18 +60,18 @@
         <view class="box-card" wx:for="{{allBoxes}}" wx:key="boxId" data-id="{{item.boxId}}" bindtap="goDetail">
           <view class="box-thumb kraft-thumb">
             <image wx:if="{{item.coverPhoto}}" class="thumb-img" src="{{item.coverPhoto}}" mode="aspectFill" />
-            <view wx:else class="thumb-emoji"><icon name="box" size="52" color="#FFFFFF" /></view>
+            <view wx:else class="thumb-emoji"><icon name="photo" size="54" color="#C28A66" stroke="1.6" /></view>
           </view>
           <view class="box-info">
             <view class="box-name">{{item.name}}</view>
-            <view class="box-loc"><icon name="pin" size="24" color="#6B6356" /><text>{{item.locText}}</text></view>
+            <view class="box-loc"><icon name="pin" size="26" color="#94897A" /><text>{{item.locText}}</text></view>
             <view class="box-items-preview">
               <text class="chip" wx:for="{{item.chips}}" wx:for-item="c" wx:key="*this">{{c}}</text>
               <text class="chip" wx:if="{{item.more > 0}}">+{{item.more}}</text>
               <text class="chip" wx:if="{{item.itemCount === 0}}">暂无物品</text>
             </view>
           </view>
-          <view class="chevron"><icon name="chevron" size="28" color="#C9C2AC" /></view>
+          <view class="chevron"><icon name="chevron" size="30" color="#CFC6B2" /></view>
         </view>
       </block>
 
@@ -87,7 +87,6 @@
         <view class="emoji"><icon name="box" size="92" color="#B8AF98" /></view>
         <view class="title">还没有箱子</view>
         <view class="sub">点右下角的按钮，把第一箱东西记下来吧</view>
-        <view class="demo-btn" bindtap="loadDemo">载入演示数据</view>
       </view>
     </view>
   </scroll-view>
@@ -98,20 +97,20 @@
   <!-- 底部 Tab -->
   <view class="tabbar">
     <view class="tab-item active">
-      <view class="ticon"><icon name="box" size="44" color="#A8824F" /></view>
+      <view class="ticon"><icon name="box" size="44" color="#C56B38" /></view>
       <text>箱子</text>
     </view>
     <view class="tab-item" bindtap="goSearch">
-      <view class="ticon"><icon name="search" size="44" color="#9A9078" /></view>
+      <view class="ticon"><icon name="search" size="44" color="#94897A" /></view>
       <text>搜索</text>
     </view>
-    <view class="tab-item" bindtap="comingSoon">
-      <view class="ticon"><icon name="pin" size="44" color="#9A9078" /></view>
+    <!-- <view class="tab-item" bindtap="comingSoon">
+      <view class="ticon"><icon name="pin" size="44" color="#94897A" /></view>
       <text>位置</text>
     </view>
     <view class="tab-item" bindtap="comingSoon">
-      <view class="ticon"><icon name="gear" size="44" color="#9A9078" /></view>
+      <view class="ticon"><icon name="user" size="44" color="#94897A" /></view>
       <text>我的</text>
-    </view>
+    </view> -->
   </view>
 </view>

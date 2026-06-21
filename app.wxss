@@ -1,21 +1,32 @@
 /* ============================================================
-   「箱底」全局样式 · 牛皮纸 / 墨色 设计令牌
-   令牌取自原型 (箱底-收纳记录-原型.html)，px → rpx 约 2 倍换算
+   「物账本」全局样式 · 暖米色 / 赤陶橙 / 鼠尾草绿 设计令牌
+   令牌取自 Claude Design 设计稿《物账本 收纳记录.dc.html》
+   px → rpx 约 2 倍换算
    ============================================================ */
 page {
-  --paper: #F2EEE4;
-  --paper-deep: #E8E1D2;
-  --ink: #2B2620;
-  --ink-soft: #6B6356;
-  --kraft: #C9A876;
-  --kraft-deep: #A8824F;
-  --stamp-red: #B14B3F;
-  --tag-green: #5C6B4F;
-  --line: #D8D0BC;
-  --white: #FFFCF6;
-  --shadow: rgba(43, 38, 32, 0.12);
+  /* 设计稿配色 */
+  --bg: #F4EDE2;
+  --card: #FFFCF7;
+  --ink: #3A322A;
+  --ink-soft: #94897A;
+  --line: #ECE3D4;
+  --chip: #F1E9DB;
+  --accent: #E08A52;
+  --accent-deep: #C56B38;
+  --sage: #7C8B6A;
+  --sage-deep: #5E7253;
+  --shadow: rgba(58, 40, 24, 0.05);
 
-  background: var(--paper);
+  /* 兼容旧变量名 → 映射到新配色 */
+  --paper: var(--bg);
+  --paper-deep: var(--chip);
+  --white: var(--card);
+  --kraft: #DBBE9A;
+  --kraft-deep: var(--accent-deep);
+  --stamp-red: var(--accent);
+  --tag-green: var(--sage);
+
+  background: var(--bg);
   color: var(--ink);
   font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 28rpx;
@@ -26,21 +37,41 @@ view, text, input, textarea, scroll-view, image, button {
   box-sizing: border-box;
 }
 
+/* 数字 / 标号采用圆体，与设计稿一致 */
+.rounded-num {
+  font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", -apple-system, sans-serif;
+}
+
+/* ---------- 页面进入动画（对应设计稿 xd-enter） ---------- */
+@keyframes xd-enter {
+  0% { opacity: 0; transform: translateY(22rpx) scale(0.99); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes xd-rise {
+  0% { opacity: 0; transform: translateY(20rpx); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.page {
+  animation: xd-enter 0.36s cubic-bezier(0.22, 0.85, 0.3, 1) both;
+}
+
 /* ---------- 自定义导航栏 ---------- */
 .nav-bar {
   position: relative;
   width: 100%;
-  background: var(--paper);
+  background: var(--bg);
 }
 .nav-content {
   display: flex;
   align-items: center;
-  height: 88rpx;
-  padding: 0 24rpx;
+  gap: 16rpx;
+  height: 84rpx;
+  padding: 12rpx 36rpx 0;
+  flex-shrink: 0;
 }
 .nav-back {
-  width: 64rpx;
-  height: 64rpx;
+  width: 76rpx;
+  height: 76rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,34 +79,36 @@ view, text, input, textarea, scroll-view, image, button {
   color: var(--ink);
 }
 .nav-title {
-  font-size: 32rpx;
+  font-size: 34rpx;
   font-weight: 700;
   color: var(--ink);
 }
 .nav-step {
   margin-left: auto;
-  font-size: 22rpx;
-  color: var(--ink-soft);
-  background: var(--paper-deep);
-  padding: 8rpx 20rpx;
+  font-size: 24rpx;
+  color: var(--accent-deep);
+  background: var(--chip);
+  padding: 10rpx 24rpx;
   border-radius: 40rpx;
+  font-weight: 700;
+  font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", -apple-system, sans-serif;
 }
 
 /* ---------- 通用容器 ---------- */
 .content {
-  padding: 0 40rpx 230rpx;
+  padding: 0 48rpx 230rpx;
 }
 
 /* ---------- 段落标签 ---------- */
 .section-label {
   display: flex;
   align-items: center;
-  gap: 16rpx;
-  margin: 44rpx 0 24rpx;
+  gap: 20rpx;
+  margin: 24rpx 0 26rpx;
   font-size: 24rpx;
   color: var(--ink-soft);
-  letter-spacing: 3rpx;
-  font-weight: 600;
+  letter-spacing: 2rpx;
+  font-weight: 700;
 }
 .section-label::after {
   content: "";
@@ -86,65 +119,65 @@ view, text, input, textarea, scroll-view, image, button {
 
 /* ---------- 物品小标签 ---------- */
 .chip {
-  font-size: 21rpx;
-  background: var(--paper-deep);
+  font-size: 22rpx;
+  background: var(--chip);
   color: var(--ink-soft);
-  padding: 6rpx 16rpx;
+  padding: 8rpx 20rpx;
   border-radius: 40rpx;
 }
 .chip.outline {
-  background: var(--white);
+  background: var(--card);
   border: 1rpx solid var(--line);
-  padding: 14rpx 28rpx;
-  font-size: 24rpx;
+  padding: 16rpx 30rpx;
+  font-size: 26rpx;
 }
 .chip.active {
-  background: var(--kraft);
+  background: var(--accent);
   color: #fff;
-  border-color: var(--kraft);
+  border-color: var(--accent);
 }
 
 /* ---------- 表单 ---------- */
-.field-group { margin-bottom: 36rpx; }
+.field-group { margin-bottom: 40rpx; }
 .field-label {
   font-size: 24rpx;
   color: var(--ink-soft);
-  margin-bottom: 16rpx;
-  font-weight: 600;
+  margin-bottom: 18rpx;
+  font-weight: 700;
   letter-spacing: 1rpx;
 }
 .field-input {
   width: 100%;
   height: 100rpx;
-  padding: 0 28rpx;
-  background: var(--white);
-  border: 2rpx solid var(--line);
-  border-radius: 24rpx;
-  font-size: 29rpx;
+  padding: 0 30rpx;
+  background: var(--card);
+  border: 3rpx solid var(--line);
+  border-radius: 30rpx;
+  font-size: 30rpx;
   color: var(--ink);
 }
-.field-input.placeholder { color: #B5AD96; }
+.field-input.placeholder { color: #B3AA98; }
 
 /* ---------- 按钮 ---------- */
 .primary-btn {
   width: 100% !important;
-  background: var(--stamp-red);
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 28rpx;
-  padding: 30rpx;
-  font-size: 30rpx;
+  border-radius: 34rpx;
+  padding: 32rpx;
+  font-size: 31rpx;
   font-weight: 700;
   letter-spacing: 1rpx;
-  box-shadow: 0 12rpx 32rpx rgba(177, 75, 63, 0.3);
+  box-shadow: 0 20rpx 44rpx rgba(224, 138, 82, 0.34);
   line-height: 1.2;
 }
 .primary-btn.green {
-  background: var(--tag-green);
-  box-shadow: 0 12rpx 32rpx rgba(92, 107, 79, 0.3);
+  background: var(--sage);
+  box-shadow: 0 20rpx 44rpx rgba(124, 139, 106, 0.32);
 }
 .primary-btn[disabled] {
-  background: #C9C2AC;
+  background: #D8CFBC;
   color: #fff;
   box-shadow: none;
 }
@@ -152,12 +185,12 @@ view, text, input, textarea, scroll-view, image, button {
   width: 100% !important;
   background: transparent;
   color: var(--ink-soft);
-  border: 2rpx solid var(--line);
-  border-radius: 28rpx;
-  padding: 28rpx;
-  font-size: 28rpx;
-  font-weight: 600;
-  margin-top: 20rpx;
+  border: 3rpx solid var(--line);
+  border-radius: 34rpx;
+  padding: 30rpx;
+  font-size: 29rpx;
+  font-weight: 700;
+  margin-top: 22rpx;
   line-height: 1.2;
 }
 button::after { border: none; }
@@ -167,28 +200,29 @@ button::after { border: none; }
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 24rpx 40rpx calc(34rpx + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--paper) 62%, rgba(242, 238, 228, 0));
+  padding: 28rpx 48rpx calc(40rpx + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 64%, rgba(244, 237, 226, 0));
   z-index: 20;
 }
 
-/* ---------- 进度条 ---------- */
+/* ---------- 进度条（对应设计稿四段式） ---------- */
 .flow-progress {
   display: flex;
-  gap: 10rpx;
-  padding: 0 40rpx 8rpx;
+  gap: 12rpx;
+  padding: 0 48rpx 12rpx;
 }
 .flow-progress .seg {
   flex: 1;
-  height: 6rpx;
-  border-radius: 6rpx;
+  height: 8rpx;
+  border-radius: 8rpx;
   background: var(--line);
+  transition: background 0.3s;
 }
-.flow-progress .seg.done { background: var(--kraft-deep); }
+.flow-progress .seg.done { background: var(--accent); }
 
-/* ---------- 缩略图（无照片时的牛皮纸底纹占位） ---------- */
+/* ---------- 缩略图占位（暖色柔光底 + 线性图标） ---------- */
 .kraft-thumb {
-  background: linear-gradient(135deg, var(--kraft), var(--kraft-deep));
+  background: #F0DAC9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,8 +235,8 @@ button::after { border: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20rpx;
-  padding: 120rpx 60rpx;
+  gap: 22rpx;
+  padding: 130rpx 60rpx;
   text-align: center;
 }
 .empty-wrap .emoji { font-size: 96rpx; opacity: 0.5; }

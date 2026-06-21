@@ -36,7 +36,7 @@ App({
       return
     }
     if (!config.cloudEnv) {
-      console.warn('[箱底] 未配置云开发环境 ID，请在 miniprogram/config.js 填写 cloudEnv')
+      console.warn('[物账本] 未配置云开发环境 ID，请在 miniprogram/config.js 填写 cloudEnv')
       return
     }
     wx.cloud.init({

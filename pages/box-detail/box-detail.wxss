@@ -2,108 +2,110 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: var(--paper);
+  background: var(--bg);
 }
-.scroll { flex: 1; overflow: hidden; }
+.scroll { flex: 1; overflow: hidden; margin-top: 12rpx; }
 
 .icon-btn-sm {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
-  background: var(--white);
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 26rpx;
+  background: var(--card);
   border: 1rpx solid var(--line);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28rpx;
   color: var(--ink);
 }
 
 /* 封面 */
 .box-hero {
-  height: 360rpx;
-  margin: 0 32rpx;
-  border-radius: 36rpx;
+  height: 352rpx;
+  margin: 0 40rpx;
+  border-radius: 48rpx;
   display: flex;
   align-items: flex-end;
   padding: 32rpx;
   position: relative;
   overflow: hidden;
-}
-.box-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(45deg, transparent, transparent 16rpx, rgba(0,0,0,0.05) 16rpx, rgba(0,0,0,0.05) 18rpx);
+  background: #E5D2C0;
 }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-cam {
   position: absolute;
-  top: 20rpx;
-  right: 20rpx;
-  width: 54rpx;
-  height: 54rpx;
+  top: 24rpx;
+  right: 24rpx;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: 50%;
-  background: rgba(43, 38, 32, 0.45);
+  background: rgba(58, 50, 42, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
 }
 .hero-label {
-  background: rgba(242,238,228,0.95);
-  padding: 16rpx 28rpx;
-  border-radius: 20rpx;
+  background: rgba(255, 253, 247, 0.94);
+  padding: 20rpx 30rpx;
+  border-radius: 28rpx;
   position: relative;
   z-index: 1;
 }
 .hero-label .bn { font-size: 34rpx; font-weight: 800; color: var(--ink); }
-.hero-label .bl { font-size: 22rpx; color: var(--ink-soft); margin-top: 2rpx; }
+.hero-label .bl { font-size: 23rpx; color: var(--ink-soft); margin-top: 4rpx; }
 
 /* 位置条 */
 .loc-strip {
-  margin: 28rpx 40rpx 0;
-  background: var(--white);
+  margin: 32rpx 40rpx 0;
+  background: var(--card);
   border: 1rpx solid var(--line);
-  border-radius: 28rpx;
-  padding: 26rpx 28rpx;
+  border-radius: 32rpx;
+  padding: 28rpx;
   display: flex;
   align-items: center;
-  gap: 24rpx;
+  gap: 26rpx;
+  box-shadow: 0 8rpx 28rpx rgba(58, 40, 24, 0.05);
 }
 .dl-icon {
-  width: 76rpx;
-  height: 76rpx;
-  border-radius: 20rpx;
-  background: var(--paper-deep);
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 24rpx;
+  background: var(--chip);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34rpx;
   flex-shrink: 0;
   overflow: hidden;
 }
 .dl-img { width: 100%; height: 100%; }
 .dl-text { flex: 1; min-width: 0; }
-.dl-title { font-size: 26rpx; font-weight: 700; color: var(--ink); }
-.dl-time { font-size: 22rpx; color: var(--ink-soft); margin-top: 2rpx; }
+.dl-title { font-size: 27rpx; font-weight: 700; color: var(--ink); }
+.dl-time {
+  font-size: 22rpx;
+  color: var(--ink-soft);
+  margin-top: 6rpx;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
 .dl-action {
   font-size: 24rpx;
-  color: var(--kraft-deep);
+  color: var(--accent-deep);
+  font-weight: 600;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 4rpx;
+  gap: 6rpx;
 }
 
 .note-strip {
-  margin: 20rpx 40rpx 0;
-  background: var(--paper-deep);
-  border-radius: 20rpx;
-  padding: 20rpx 26rpx;
+  margin: 22rpx 40rpx 0;
+  background: var(--chip);
+  border-radius: 26rpx;
+  padding: 22rpx 28rpx;
   display: flex;
   align-items: flex-start;
-  gap: 12rpx;
+  gap: 14rpx;
 }
 .note-txt {
   flex: 1;
@@ -122,98 +124,104 @@
 .sheet-mask {
   position: fixed;
   inset: 0;
-  background: rgba(43, 38, 32, 0.45);
+  background: rgba(58, 50, 42, 0.45);
   z-index: 50;
   display: flex;
   align-items: flex-end;
 }
 .sheet {
   width: 100%;
-  background: var(--paper);
-  border-radius: 32rpx 32rpx 0 0;
-  padding: 32rpx 40rpx calc(32rpx + env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 36rpx 48rpx calc(36rpx + env(safe-area-inset-bottom));
+  animation: xd-rise 0.32s cubic-bezier(0.22, 0.85, 0.3, 1) both;
 }
 .sheet-title {
   font-size: 30rpx;
   font-weight: 700;
   color: var(--ink);
   text-align: center;
-  margin-bottom: 28rpx;
+  margin-bottom: 32rpx;
 }
 .sheet-row {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  gap: 22rpx;
   margin-bottom: 28rpx;
 }
 .add-photo {
   position: relative;
-  width: 128rpx;
-  height: 128rpx;
+  width: 132rpx;
+  height: 132rpx;
   flex-shrink: 0;
-  border-radius: 20rpx;
+  border-radius: 28rpx;
   border: 2rpx dashed var(--line);
-  background: var(--white);
+  background: var(--card);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6rpx;
+  gap: 8rpx;
   overflow: hidden;
 }
 .add-photo-img { width: 100%; height: 100%; }
 .add-photo-tip { font-size: 20rpx; color: var(--ink-soft); }
 .add-photo-clear {
   position: absolute;
-  top: 4rpx;
-  right: 4rpx;
-  width: 38rpx;
-  height: 38rpx;
+  top: 6rpx;
+  right: 6rpx;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
-  background: rgba(43, 38, 32, 0.6);
+  background: rgba(58, 50, 42, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .sheet-input {
   flex: 1;
-  background: var(--white);
-  border: 2rpx solid var(--line);
-  border-radius: 20rpx;
-  height: 128rpx;
-  padding: 0 28rpx;
+  background: var(--card);
+  border: 3rpx solid var(--line);
+  border-radius: 28rpx;
+  height: 132rpx;
+  padding: 0 30rpx;
   font-size: 29rpx;
   color: var(--ink);
 }
-.ph { color: #B5AD96; }
+.ph { color: #B3AA98; }
 .sheet-actions { margin-top: 8rpx; }
 
 /* 物品宫格 */
 .items-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 18rpx;
+  gap: 22rpx;
 }
 .item-cell {
-  background: var(--white);
+  background: var(--card);
   border: 1rpx solid var(--line);
-  border-radius: 24rpx;
-  padding: 16rpx;
+  border-radius: 30rpx;
+  padding: 18rpx;
   text-align: center;
 }
 .ic-thumb {
   width: 100%;
-  height: 110rpx;
-  border-radius: 14rpx;
+  height: 112rpx;
+  border-radius: 22rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40rpx;
-  margin-bottom: 12rpx;
+  margin-bottom: 14rpx;
 }
-.ic-img { width: 100%; height: 100%; border-radius: 14rpx; }
+/* 占位缩略图 · 暖色柔光底循环（与设计稿一致） */
+.item-cell:nth-child(5n+1) .ic-thumb { background: #EAD9CB; }
+.item-cell:nth-child(5n+2) .ic-thumb { background: #DEE5D2; }
+.item-cell:nth-child(5n+3) .ic-thumb { background: #F2D7C6; }
+.item-cell:nth-child(5n+4) .ic-thumb { background: #ECE0C6; }
+.item-cell:nth-child(5n+5) .ic-thumb { background: #E9D8C8; }
+.ic-img { width: 100%; height: 100%; border-radius: 22rpx; }
 .ic-name {
-  font-size: 22rpx;
+  font-size: 23rpx;
   color: var(--ink);
   font-weight: 600;
   overflow: hidden;
@@ -224,7 +232,7 @@
 .items-empty {
   text-align: center;
   font-size: 25rpx;
-  color: #ADA68F;
+  color: #B3AA98;
   line-height: 1.7;
   padding: 60rpx 40rpx;
   white-space: pre-wrap;

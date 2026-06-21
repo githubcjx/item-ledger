@@ -7,9 +7,9 @@
   ],
   "window": {
     "navigationStyle": "custom",
-    "backgroundColor": "#F2EEE4",
+    "backgroundColor": "#F4EDE2",
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#F2EEE4",
+    "navigationBarBackgroundColor": "#F4EDE2",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",

@@ -2,9 +2,9 @@
   <view style="height:{{statusBarHeight}}px;"></view>
 
   <view class="nav-content" style="padding-right:{{menuRight}}px;">
-    <view class="nav-back" bindtap="back"><icon name="back" size="40" color="#2B2620" /></view>
+    <view class="nav-back" bindtap="back"><icon name="back" size="40" color="#3A322A" /></view>
     <view class="nav-title" style="flex:1;">箱子详情</view>
-    <view class="icon-btn-sm" bindtap="editBox"><icon name="edit" size="32" color="#2B2620" /></view>
+    <view class="icon-btn-sm" bindtap="editBox"><icon name="edit" size="34" color="#3A322A" /></view>
   </view>
 
   <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
@@ -22,17 +22,17 @@
     <view class="loc-strip" bindtap="tapLocation">
       <view class="dl-icon">
         <image wx:if="{{box.locationPhoto}}" class="dl-img" src="{{box.locationPhoto}}" mode="aspectFill" />
-        <icon wx:else name="pin" size="36" color="#6B6356" />
+        <icon wx:else name="pin" size="38" color="#C56B38" />
       </view>
       <view class="dl-text">
         <view class="dl-title">{{box.locationName || '未记录位置'}}</view>
-        <view class="dl-time">最后更新于 {{updatedText}}</view>
+        <view class="dl-time"><icon name="clock" size="22" color="#94897A" /><text>最后更新于 {{updatedText}}</text></view>
       </view>
-      <view class="dl-action"><text>管理</text><icon name="chevron" size="24" color="#A8824F" /></view>
+      <view class="dl-action"><icon name="refresh" size="26" color="#C56B38" /><text>更新</text></view>
     </view>
 
     <view wx:if="{{box.note}}" class="note-strip">
-      <icon name="edit" size="26" color="#6B6356" />
+      <icon name="edit" size="28" color="#94897A" />
       <text class="note-txt">{{box.note}}</text>
     </view>
 
@@ -45,7 +45,7 @@
           data-id="{{item.itemId}}" data-photo="{{item.photo}}" data-name="{{item.name}}" bindtap="tapItem">
           <view class="ic-thumb kraft-soft">
             <image wx:if="{{item.photo}}" class="ic-img" src="{{item.photo}}" mode="aspectFill" />
-            <icon wx:else name="bookmark" size="40" color="#A8824F" />
+            <icon wx:else name="photo" size="44" color="#C28A66" />
           </view>
           <view class="ic-name">{{item.name}}</view>
         </view>
@@ -70,7 +70,7 @@
         <view class="add-photo" bindtap="chooseAddPhoto">
           <image wx:if="{{addModal.photo}}" class="add-photo-img" src="{{addModal.photo}}" mode="aspectFill" />
           <block wx:else>
-            <icon name="camera" size="40" color="#6B6356" />
+            <icon name="camera" size="40" color="#94897A" />
             <view class="add-photo-tip">图片可选</view>
           </block>
           <view wx:if="{{addModal.photo}}" class="add-photo-clear" catchtap="clearAddPhoto"><icon name="close" size="20" color="#FFFFFF" /></view>

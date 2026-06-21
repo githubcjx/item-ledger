@@ -61,18 +61,6 @@ Page({
     }
   },
 
-  async loadDemo() {
-    wx.showLoading({ title: '载入中', mask: true })
-    try {
-      await store.seedDemo()
-      await this.refresh()
-    } catch (e) {
-      wx.showToast({ title: '载入失败', icon: 'none' })
-    } finally {
-      wx.hideLoading()
-    }
-  },
-
   goSearch() {
     wx.navigateTo({ url: '/pages/search/search' })
   },
