@@ -23,6 +23,16 @@ Page({
     this.refresh()
   },
 
+  onShareAppMessage() {
+    const box = this.data.box
+    const title = box
+      ? '「' + box.name + '」收纳了 ' + (box.items ? box.items.length : 0) + ' 件物品'
+      : '物账本 · 看看这个箱子里有什么'
+    const share = { title, path: '/pages/box-detail/box-detail?id=' + this.data.boxId }
+    if (box && box.coverPhoto) share.imageUrl = box.coverPhoto
+    return share
+  },
+
   async refresh() {
     if (!app.globalData.cloudReady) {
       wx.showToast({ title: '请先配置云开发环境', icon: 'none' })

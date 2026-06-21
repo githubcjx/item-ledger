@@ -23,6 +23,13 @@ Page({
     this._preload()
   },
 
+  onShareAppMessage() {
+    return {
+      title: '用物账本找东西，一搜就知道',
+      path: '/pages/index/index'
+    }
+  },
+
   async _preload() {
     if (!app.globalData.cloudReady) return
     try {

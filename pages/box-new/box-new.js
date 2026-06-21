@@ -39,6 +39,13 @@ Page({
     })
   },
 
+  onShareAppMessage() {
+    return {
+      title: '用物账本记录你的收纳，找东西不再翻箱倒柜',
+      path: '/pages/index/index'
+    }
+  },
+
   /* ---------- 选图（保留本地临时路径，提交时再上传） ---------- */
   _choose(cb) {
     wx.chooseMedia({

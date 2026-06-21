@@ -26,6 +26,17 @@ Page({
     this.refresh()
   },
 
+  onShareAppMessage() {
+    return {
+      title: '物账本 · 东西收哪了，一搜就知道',
+      path: '/pages/index/index'
+    }
+  },
+
+  onShareTimeline() {
+    return { title: '物账本 · 东西收哪了，一搜就知道' }
+  },
+
   async refresh() {
     if (!app.globalData.cloudReady) {
       this.setData({ cloudReady: false, loading: false })
