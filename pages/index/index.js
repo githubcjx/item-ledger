@@ -29,7 +29,8 @@ Page({
   onShareAppMessage() {
     return {
       title: '物账本 · 东西收哪了，一搜就知道',
-      path: '/pages/index/index'
+      path: '/pages/index/index',
+      imageUrl: '/images/logo.png'
     }
   },
 

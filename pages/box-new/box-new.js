@@ -42,7 +42,8 @@ Page({
   onShareAppMessage() {
     return {
       title: '用物账本记录你的收纳，找东西不再翻箱倒柜',
-      path: '/pages/index/index'
+      path: '/pages/index/index',
+      imageUrl: '/images/logo.png'
     }
   },
 

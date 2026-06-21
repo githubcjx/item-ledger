@@ -26,7 +26,8 @@ Page({
   onShareAppMessage() {
     return {
       title: '用物账本找东西，一搜就知道',
-      path: '/pages/index/index'
+      path: '/pages/index/index',
+      imageUrl: '/images/logo.png'
     }
   },
 
